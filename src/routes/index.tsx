@@ -60,7 +60,7 @@ function StillWaters() {
   }, []);
 
   useEffect(() => {
-    Object.values(import.meta.glob("@/assets/*.jpg")).forEach((load) => void load());
+    Object.values(import.meta.glob("../assets/*.jpg")).forEach((load) => void load());
   }, []);
 
   const results = useMemo(() => searchVerses(query), [query]);
