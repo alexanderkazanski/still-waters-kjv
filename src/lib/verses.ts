@@ -76,12 +76,12 @@ export function dayKey(date = new Date()): string {
 
 /** Deterministic verse for a given calendar day. */
 export function verseOfTheDay(date = new Date()): Verse {
-  return verses[hashString(dayKey(date)) % verses.length];
+  return verses[hashString(dayKey(date)) % verses.length]!;
 }
 
 export function randomVerse(pool: Verse[], exclude?: Verse): Verse {
   const list = exclude && pool.length > 1 ? pool.filter((v) => v.reference !== exclude.reference) : pool;
-  return list[Math.floor(Math.random() * list.length)];
+  return list[Math.floor(Math.random() * list.length)]!;
 }
 
 export function searchVerses(query: string): Verse[] {
