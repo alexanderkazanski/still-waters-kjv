@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Bell, Bookmark, Search, Share2, Shuffle } from "lucide-react";
+import { Bell, Bookmark, Download, Search, Share2, Shuffle } from "lucide-react";
 
 import { VersePanel } from "@/components/VersePanel";
 import { shareVerseImage } from "@/lib/share";
@@ -154,6 +154,22 @@ function StillWaters() {
             }}
           >
             <Share2 className={`size-4 ${sharing ? "opacity-40" : ""}`} />
+          </IconButton>
+          <IconButton
+            label="Download verse"
+            onClick={() => {
+              const blob = new Blob([`${verse.text}\n\n${verse.reference} · KJV`], { type: "text/plain" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `${verse.book}_${verse.chapter}_${verse.verse}.txt`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            }}
+          >
+            <Download className="size-4" />
           </IconButton>
           <IconButton label="Search verses" onClick={() => setPanel("search")}>
             <Search className="size-4" />

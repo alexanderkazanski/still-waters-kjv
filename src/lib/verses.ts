@@ -9,15 +9,7 @@ import hopeImg from "@/assets/hope.jpg";
 import faithImg from "@/assets/faith.jpg";
 import loveImg from "@/assets/love.jpg";
 
-export type Category =
-  | "comfort"
-  | "strength"
-  | "peace"
-  | "guidance"
-  | "gratitude"
-  | "hope"
-  | "faith"
-  | "love";
+export type Category = string;
 
 export type Verse = {
   book: string;
@@ -31,15 +23,8 @@ export type Verse = {
 export const verses = raw as Verse[];
 
 export const categories: { id: Category; label: string }[] = [
-  { id: "comfort", label: "Comfort" },
-  { id: "strength", label: "Strength" },
-  { id: "peace", label: "Peace" },
-  { id: "guidance", label: "Guidance" },
-  { id: "gratitude", label: "Gratitude" },
-  { id: "hope", label: "Hope" },
-  { id: "faith", label: "Faith" },
-  { id: "love", label: "Love" },
-];
+  ...new Set(verses.flatMap((v) => v.categories)),
+].map((c) => ({ id: c, label: c }));
 
 export const categoryImages: Record<Category, string> = {
   comfort: comfortImg,
@@ -53,7 +38,7 @@ export const categoryImages: Record<Category, string> = {
 };
 
 export function imageForVerse(verse: Verse): string {
-  return categoryImages[verse.categories[0] ?? "peace"];
+  return categoryImages[verse.categories[0] ?? ""] ?? peaceImg;
 }
 
 export function byCategory(category: Category | "all"): Verse[] {
