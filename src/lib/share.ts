@@ -28,7 +28,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 }
 
 /** Renders verse + background to a 1080x1350 PNG and triggers a download. */
-export async function shareVerseImage(verse: Verse, imageSrc: string) {
+export async function shareVerseImage(verse: Verse, imageSrc: string, downloadOnly = false) {
   const W = 1080;
   const H = 1350;
   const canvas = document.createElement("canvas");
@@ -86,7 +86,7 @@ export async function shareVerseImage(verse: Verse, imageSrc: string) {
   });
 
   const nav = navigator as Navigator & { canShare?: (data: ShareData) => boolean };
-  if (nav.canShare?.({ files: [file] })) {
+  if (!downloadOnly && nav.canShare?.({ files: [file] })) {
     try {
       await navigator.share({ files: [file], title: verse.reference });
       return;
@@ -102,3 +102,5 @@ export async function shareVerseImage(verse: Verse, imageSrc: string) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export const downloadVerseImage = (verse: Verse, imageSrc: string) => shareVerseImage(verse, imageSrc, true);

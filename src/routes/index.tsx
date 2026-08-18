@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bell, Bookmark, Download, Search, Share2, Shuffle } from "lucide-react";
 
 import { VersePanel } from "@/components/VersePanel";
-import { shareVerseImage } from "@/lib/share";
+import { downloadVerseImage, shareVerseImage } from "@/lib/share";
 import { useFavorites, useReminder, useStreak } from "@/lib/storage";
 import {
   byCategory,
@@ -156,17 +156,9 @@ function StillWaters() {
             <Share2 className={`size-4 ${sharing ? "opacity-40" : ""}`} />
           </IconButton>
           <IconButton
-            label="Download verse"
+            label="Download image"
             onClick={() => {
-              const blob = new Blob([`${verse.text}\n\n${verse.reference} · KJV`], { type: "text/plain" });
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = `${verse.book}_${verse.chapter}_${verse.verse}.txt`;
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
-              URL.revokeObjectURL(url);
+              void downloadVerseImage(verse, image);
             }}
           >
             <Download className="size-4" />
